@@ -60,7 +60,7 @@ Watch the [demo video](https://www.youtube.com/watch?v=LY2hIWl8IvU) showcasing t
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/aref2008/move_the_square.git
+    git clone https://github.com/aref2008/move_the_square_game.git
     ```
 
 2. Install dependencies:
