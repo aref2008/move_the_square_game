@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Move the Shape!</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 70px; 
+        }
+        .sidebar {
+            padding: 20px;
+            background-color: #ffe4e1;
+            border-radius: 10px;
+            height: 100%; 
+            display: flex;
+            flex-direction: column; 
+            justify-content: center; 
+        }
+        .commands h2 {
+            font-size: 20px;
+            color: #ff69b4;
+        }
+        .commands ul {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 16px;
+            flex-grow: 1; 
+            margin: 0; 
+            overflow-y: auto; 
+        }
+        .commands li {
+            margin: 10px 0;
+            padding: 5px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer; 
+            transition: background-color 0.2s; 
+        }
+        .commands li:hover {
+            background-color: #ffb6c1; 
+        }
+        .game-area {
+            padding: 20px;
+        }
+        #game-box {
+            width: 100%;
+            max-width: 500px;
+            height: 500px;
+            border: 5px solid black;
+            position: relative;
+            background-color: #fff;
+            border-radius: 10px;
+            margin: 0 auto;
+        }
+        .shape {
+            position: absolute;
+            transition: all 0.3s;
+        }
+        .circle {
+            border-radius: 50%;
+            background-color: rgba(0, 0, 255, 0.6);
+            width: 50px;
+            height: 50px;
+        }
+        .square {
+            background-color: rgba(255, 0, 0, 0.6);
+            width: 50px;
+            height: 50px;
+        }
+        .pentagon {
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            background-color: rgba(0, 255, 0, 0.6);
+            width: 50px;
+            height: 50px;
+        }
+        .hexagon {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background-color: rgba(255, 255, 0, 0.6);
+            width: 50px;
+            height: 50px;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px;
+            font-size: 18px;
+            margin-left: 10px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff1493;
+        }
+        .commands img {
+            width: 100%; 
+            height: auto; 
+            margin-bottom: 15px; 
+            border-radius: 10px; 
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ff69b4;">
+    <a class="navbar-brand" href="#">Hello Ada</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Games</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact Us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="sidebar">
+                <div class="commands">
+                    <img src="static/images/dora.png" alt="Available Commands Image"> 
+                    <h2>Available Commands:</h2>
+                    <ul>
+                        <li onclick="sendCommand('move left')">"move left"</li>
+                        <li onclick="sendCommand('move right')">"move right"</li>
+                        <li onclick="sendCommand('move up')">"move up"</li>
+                        <li onclick="sendCommand('move down')">"move down"</li>
+                        <li onclick="sendCommand('change color')">"change color"</li>
+                        <li onclick="sendCommand('change shape')">"change shape"</li>
+                        <li onclick="sendCommand('jump')">"jump"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="game-area">
+                <div id="game-box">
+                    <div id="shape" class="shape circle" style="background-color: rgba(0, 0, 255, 0.6);"></div>
+                </div>
+                <br>
+                <input type="text" id="commandInput" placeholder="Type a command...">
+                <button onclick="sendCommand(document.getElementById('commandInput').value)">Go</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer bg-light text-center" style="padding: 10px; position: fixed; bottom: 0; width: 100%; background-color: #ff69b4;">
+    <p class="mb-0">Contact Us: <strong>hello@helloada.ai</strong> </p>
+</footer>
+
+<script>
+    // Update shape position, color, and shape type
+    function updateShape(state) {
+        const shape = document.getElementById("shape");
+        shape.style.left = state.x + 'px';
+        shape.style.top = state.y + 'px';
+        shape.style.backgroundColor = state.color;
+        shape.className = 'shape ' + state.shape;
+
+        // Change body background color when shape color changes
+        if (state.color) {
+            document.body.style.backgroundColor = state.color;
+        }
+    }
+
+    // Send command to Flask app
+    function sendCommand(command) {
+        fetch("/command", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: "command=" + encodeURIComponent(command),
+        })
+        .then(response => response.json())
+        .then(data => updateShape(data));
+    }
+</script>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
