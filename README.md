@@ -86,4 +86,3 @@ Watch the [demo video](https://www.youtube.com/watch?v=LY2hIWl8IvU) showcasing t
    - "change color"
    - "jump"
    - "please move it right"
-```
